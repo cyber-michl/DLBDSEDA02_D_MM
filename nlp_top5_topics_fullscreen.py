@@ -1,16 +1,3 @@
-Alles klar 👍
-Ich baue dir dein Skript **so um, dass es exakt der Aufgabenstellung entspricht**:
-
-* **Extraktion der 5 häufigsten Themen** aus deutschsprachigen Texten.
-* **Nur deutschsprachige Begriffe** in den Topics (englische werden mit gefiltert).
-* **Zwei Verfahren**:
-
-  1. **BERTopic** mit multilingualem Modell.
-  2. **LDA** mit deutscher Stopwort-Filterung.
-* **HTML-Output fullscreen**, mit kurzer Erklärung zum Modell.
-
-Hier das angepasste Skript `nlp_top5_topics_fullscreen.py`:
-
 ```python
 import pandas as pd
 import re
@@ -142,19 +129,3 @@ with open("lda_top5.html", "w", encoding="utf-8") as f:
 
 print("LDA abgeschlossen. HTML gespeichert als 'lda_top5.html'.")
 ```
-
----
-
-📌 Änderungen gegenüber deinem letzten Stand:
-
-* Multilinguales Embeddingmodell `paraphrase-multilingual-MiniLM-L12-v2`.
-* Kombination deutscher + englischer Stopwortlisten.
-* HTML-Ausgabe fullscreen, mit **deutscher Erklärung pro Modell**.
-* Ausgabe:
-
-  * `bertopic_top5.html`
-  * `lda_top5.html`
-
----
-
-👉 Soll ich dir auch eine **kleine Vorschau** geben, wie die beiden HTML-Dokumente visuell aussehen (z. B. ein Screenshot-ähnliches Mockup im Chat)?
