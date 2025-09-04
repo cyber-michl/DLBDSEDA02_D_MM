@@ -13,10 +13,8 @@ from io import BytesIO
 # NLTK Ressourcen laden
 nltk.download('stopwords')
 
-# Stopwörter kombinieren (Deutsch + Englisch)
+# Nur deutsche Stopwörter verwenden
 german_stopwords = set(stopwords.words('german'))
-english_stopwords = set(stopwords.words('english'))
-all_stopwords = german_stopwords.union(english_stopwords)
 
 # CSV laden (Dateiname ggf. anpassen!)
 df = pd.read_csv("multilingual_support_tickets.csv")
@@ -29,7 +27,7 @@ df = df[df["language"] == "de"]
 def clean_text(text):
     text = str(text).lower()
     text = re.sub(r'[^a-zäöüß ]', ' ', text)
-    tokens = [w for w in text.split() if w not in all_stopwords and len(w) > 2]
+    tokens = [w for w in text.split() if w not in german_stopwords and len(w) > 2]
     return " ".join(tokens)
 
 df["clean_body"] = df["body"].astype(str).apply(clean_text)
@@ -62,21 +60,21 @@ bertopic_html = """
 <meta charset="UTF-8">
 <title>Top 5 Themen – BERTopic</title>
 <style>
-  body {{ font-family: Arial, sans-serif; margin: 0; padding: 0; }}
-  .container {{ width: 100vw; height: 100vh; padding: 40px; box-sizing: border-box; }}
-  h1 {{ text-align: center; }}
-  .topic {{ margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }}
-  .explain {{ background: #eef; padding: 10px; margin: 20px 0; border-radius: 8px; }}
+    body {{ font-family: Arial, sans-serif; margin: 0; padding: 0; }}
+    .container {{ width: 100vw; height: 100vh; padding: 40px; box-sizing: border-box; }}
+    h1 {{ text-align: center; }}
+    .topic {{ margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }}
+    .explain {{ background: #eef; padding: 10px; margin: 20px 0; border-radius: 8px; }}
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>Top 5 Themen – BERTopic</h1>
-  <div class="explain">
-    <strong>Erklärung:</strong> BERTopic nutzt semantische Embeddings und Clustering, 
-    um ähnliche Texte automatisch zu gruppieren. Jedes Thema wird durch die wichtigsten Begriffe beschrieben.
-  </div>
-  <img src="data:image/png;base64,{chart}" alt="Balkendiagramm">
+    <h1>Top 5 Themen – BERTopic</h1>
+    <div class="explain">
+        <strong>Erklärung:</strong> BERTopic nutzt semantische Embeddings und Clustering,
+        um ähnliche Texte automatisch zu gruppieren. Jedes Thema wird durch die wichtigsten Begriffe beschrieben.
+    </div>
+    <img src="data:image/png;base64,{chart}" alt="Balkendiagramm">
 """.format(chart=bertopic_chart)
 
 # Durchnummerierung 1–5
@@ -124,21 +122,21 @@ lda_html = """
 <meta charset="UTF-8">
 <title>Top 5 Themen – LDA</title>
 <style>
-  body {{ font-family: Arial, sans-serif; margin: 0; padding: 0; }}
-  .container {{ width: 100vw; height: 100vh; padding: 40px; box-sizing: border-box; }}
-  h1 {{ text-align: center; }}
-  .topic {{ margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }}
-  .explain {{ background: #efe; padding: 10px; margin: 20px 0; border-radius: 8px; }}
+    body {{ font-family: Arial, sans-serif; margin: 0; padding: 0; }}
+    .container {{ width: 100vw; height: 100vh; padding: 40px; box-sizing: border-box; }}
+    h1 {{ text-align: center; }}
+    .topic {{ margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }}
+    .explain {{ background: #efe; padding: 10px; margin: 20px 0; border-radius: 8px; }}
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>Top 5 Themen – LDA</h1>
-  <div class="explain">
-    <strong>Erklärung:</strong> LDA (Latent Dirichlet Allocation) ist ein probabilistisches Modell, 
-    das jedes Dokument als Mischung von Themen darstellt. Jedes Thema besteht aus den wichtigsten Wörtern mit hoher Wahrscheinlichkeit.
-  </div>
-  <img src="data:image/png;base64,{chart}" alt="Balkendiagramm">
+    <h1>Top 5 Themen – LDA</h1>
+    <div class="explain">
+        <strong>Erklärung:</strong> LDA (Latent Dirichlet Allocation) ist ein probabilistisches Modell,
+        das jedes Dokument als Mischung von Themen darstellt. Jedes Thema besteht aus den wichtigsten Wörtern mit hoher Wahrscheinlichkeit.
+    </div>
+    <img src="data:image/png;base64,{chart}" alt="Balkendiagramm">
 """.format(chart=lda_chart)
 
 # Durchnummerierung 1–5
