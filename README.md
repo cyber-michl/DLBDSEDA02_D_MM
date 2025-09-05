@@ -20,6 +20,16 @@ Zur numerischen Repräsentation der Texte wurden zwei Verfahren eingesetzt:
 Themenextraktionstechniken:
 - Latent Dirichlet Allocation (LDA) (gensim)
 - BERTopic (semantisches Clustering basierend auf Embeddings + HDBSCAN)
-  
+
+
+Umgebung automatisch aufsetzen:
+-> requirements.txt
+pip install -r requirements.txt
+
+-> environment.yml (conda)
+conda env create -f environment.yml
+conda activate nlp-beschwerden
+
+
 Verwendete Bibliotheken:
 pandas, nltk, spaCy, scikit-learn, gensim, BERTopic, sentence-transformers, matplotlib

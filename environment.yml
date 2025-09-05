@@ -1,0 +1,17 @@
+name: nlp-beschwerden
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pandas
+  - numpy
+  - matplotlib
+  - nltk
+  - gensim
+  - spacy
+  - pip
+  - pip:
+      - bertopic
+      - sentence-transformers
+      - wordcloud
+      - scikit-learn
