@@ -36,7 +36,7 @@ Themenextraktionstechniken:
 - BERTopic (semantisches Clustering basierend auf Embeddings + HDBSCAN)
 
 Umgebung automatisch aufsetzen:
-- environment.yml (conda)
+**environment.yml (conda)**
 
 conda env create -f environment.yml
 
@@ -47,7 +47,7 @@ import nltk
 nltk.download("stopwords")
 
 
-- requirements.txt
+**requirements.txt**
 
 pip install -r requirements.txt
 
@@ -58,5 +58,5 @@ import nltk
 nltk.download("stopwords")
 
 
-Verwendete Bibliotheken:
+**Verwendete Bibliotheken**
 pandas, nltk, spaCy, scikit-learn, gensim, BERTopic, sentence-transformers, matplotlib
