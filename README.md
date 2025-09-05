@@ -23,10 +23,10 @@ Themenextraktionstechniken:
 
 
 Umgebung automatisch aufsetzen:
--> requirements.txt
+- requirements.txt
 pip install -r requirements.txt
 
--> environment.yml (conda)
+- environment.yml (conda)
 conda env create -f environment.yml
 conda activate nlp-beschwerden
 
