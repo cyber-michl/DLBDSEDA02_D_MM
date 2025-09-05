@@ -39,16 +39,22 @@ Umgebung automatisch aufsetzen:
 - environment.yml (conda)
 
 conda env create -f environment.yml
+
 conda activate nlp-beschwerden
+
 import nltk
+
 nltk.download("stopwords")
 
 
 - requirements.txt
 
 pip install -r requirements.txt
+
 python -m spacy download de_core_news_sm
+
 import nltk
+
 nltk.download("stopwords")
 
 
