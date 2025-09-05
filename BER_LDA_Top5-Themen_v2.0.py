@@ -10,13 +10,13 @@ import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 
-# NLTK Ressourcen laden
+# NLTK Ressourcen
 nltk.download('stopwords')
 
-# Nur deutsche Stopwörter verwenden
+# deutsche Stopwörter verwenden
 german_stopwords = set(stopwords.words('german'))
 
-# CSV laden (Dateiname ggf. anpassen!)
+# CSV laden
 df = pd.read_csv("multilingual_support_tickets.csv")
 print("Spalten:", df.columns)
 
@@ -33,8 +33,8 @@ def clean_text(text):
 df["clean_body"] = df["body"].astype(str).apply(clean_text)
 print("Anzahl deutschsprachiger Beschwerden:", len(df))
 
-# ---------- BERTopic ----------
-print("Starte BERTopic …")
+# BERTopic
+print("Starte BERTopic")
 embedding_model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 topic_model = BERTopic(embedding_model=embedding_model, language="german")
 
@@ -72,7 +72,7 @@ bertopic_html = """
     <h1>Top 5 Themen – BERTopic</h1>
     <div class="explain">
         <strong>Erklärung:</strong> BERTopic nutzt semantische Embeddings und Clustering,
-        um ähnliche Texte automatisch zu gruppieren. Jedes Thema wird durch die wichtigsten Begriffe beschrieben.
+        um ähnliche Texte automatisch zu gruppieren.
     </div>
     <img src="data:image/png;base64,{chart}" alt="Balkendiagramm">
 """.format(chart=bertopic_chart)
@@ -90,15 +90,15 @@ with open("bertopic_top5.html", "w", encoding="utf-8") as f:
 
 print("BERTopic abgeschlossen. HTML gespeichert als 'bertopic_top5.html'.")
 
-# ---------- LDA ----------
-print("Starte LDA …")
+# LDA
+print("Starte LDA")
 texts = [t.split() for t in df["clean_body"]]
 dictionary = corpora.Dictionary(texts)
 corpus = [dictionary.doc2bow(text) for text in texts]
 
 lda_model = LdaModel(corpus=corpus, id2word=dictionary, num_topics=5, passes=10, random_state=42)
 
-# Bestes Thema je Dokument
+# Bestes Thema
 doc_topics = [max(lda_model.get_document_topics(bow), key=lambda x: x[1])[0] for bow in corpus]
 df["lda_topic"] = doc_topics
 lda_freq = df["lda_topic"].value_counts().head(5)
@@ -133,8 +133,7 @@ lda_html = """
 <div class="container">
     <h1>Top 5 Themen – LDA</h1>
     <div class="explain">
-        <strong>Erklärung:</strong> LDA (Latent Dirichlet Allocation) ist ein probabilistisches Modell,
-        das jedes Dokument als Mischung von Themen darstellt. Jedes Thema besteht aus den wichtigsten Wörtern mit hoher Wahrscheinlichkeit.
+        <strong>Erklärung:</strong> LDA (Latent Dirichlet Allocation)
     </div>
     <img src="data:image/png;base64,{chart}" alt="Balkendiagramm">
 """.format(chart=lda_chart)
