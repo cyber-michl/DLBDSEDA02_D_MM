@@ -6,7 +6,21 @@ IU International University
 
 Im Rahmen des Portfolios wurde ein Datenanalyseprojekt realisiert, das darauf abzielt, häufig genannte Themen in deutschsprachigen Beschwerdetexten mittels Natural Language Processing (NLP) zu identifizieren. Ziel war es, auf Grundlage der identifizierten Inhalte datenbasierte Erkenntnisse über die größten Unzufriedenheiten zu gewinnen. Die Ergebnisse sollen exemplarisch als Input für kommunale Entscheidungsträger dienen.
 
-Die Umsetzung erfolgte in einer virtuellen Python-Umgebung mit venv und einer separaten requirements.txt zur Bibliotheksverwaltung. Verwendet wurde der Kaggle-Datensatz „Multilingual Customer Support Tickets“. Daraus wurden gezielt die deutschsprachigen Einträge extrahiert.
+Die Umsetzung erfolgte in einer **virtuellen Python-Umgebung mit conda**.  
+Zur Verwaltung und Reproduzierbarkeit der Abhängigkeiten wurde eine separate **`environment.yml`** verwendet.  
+
+Als Datengrundlage diente der Kaggle-Datensatz **„Multilingual Customer Support Tickets“**.  
+Daraus wurden gezielt die **deutschsprachigen Einträge** extrahiert und für die Analyse genutzt.
+
+Ziel war es, mit Hilfe von **NLP-Techniken** die am häufigsten angesprochenen Themen aus den Beschwerden
+zu extrahieren und diese für Entscheidungsträger verständlich aufzubereiten.
+
+Es wurden zwei unterschiedliche semantische Analysetechniken eingesetzt:
+- **BERTopic** (Clustering basierend auf Sentence-Transformers)
+- **LDA (Latent Dirichlet Allocation)**
+
+Die Ergebnisse werden sowohl in Form von **HTML-Reports** mit den Top 5 Themen als auch
+in **Balkendiagrammen** dargestellt.
 
 Die Vorverarbeitung beinhaltete:
 - Unicode- und Zeichensäuberung
@@ -22,15 +36,15 @@ Themenextraktionstechniken:
 - BERTopic (semantisches Clustering basierend auf Embeddings + HDBSCAN)
 
 Umgebung automatisch aufsetzen:
-- requirements.txt
-
-pip install -r requirements.txt
-
 - environment.yml (conda)
 
 conda env create -f environment.yml
 
 conda activate nlp-beschwerden
+
+- requirements.txt
+
+pip install -r requirements.txt
 
 
 Verwendete Bibliotheken:
