@@ -16,17 +16,17 @@ from io import BytesIO
 nltk.download("stopwords")
 german_stopwords = set(stopwords.words("german"))
 
-# spaCy Modell laden (deutsch)
+# spaCy Modell laden
 nlp = spacy.load("de_core_news_sm")
 
-# CSV laden (Datensatz anpassen!)
+# CSV laden
 df = pd.read_csv("multilingual_support_tickets.csv")
 print("Spalten:", df.columns)
 
 # Nur deutschsprachige Einträge
 df = df[df["language"] == "de"]
 
-# Texte bereinigen mit spaCy (inkl. Lemmatisierung)
+# Texte bereinigen mit spaCy
 def clean_text_spacy(text):
     doc = nlp(str(text).lower())
     tokens = [
@@ -38,16 +38,14 @@ def clean_text_spacy(text):
 df["clean_body"] = df["body"].astype(str).apply(clean_text_spacy)
 print("Anzahl deutschsprachiger Beschwerden:", len(df))
 
-# ======================================================
-# TF-IDF Vektorisierung (zweites Verfahren zur Repräsentation)
-# ======================================================
+
+# TF-IDF Vektorisierung
 vectorizer = TfidfVectorizer(max_features=5000)
 tfidf_matrix = vectorizer.fit_transform(df["clean_body"])
 print("TF-IDF-Matrix erstellt:", tfidf_matrix.shape)
 
-# ======================================================
+
 # BERTopic
-# ======================================================
 print("Starte BERTopic …")
 embedding_model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 topic_model = BERTopic(embedding_model=embedding_model, language="german")
@@ -104,9 +102,7 @@ with open("bertopic_top5.html", "w", encoding="utf-8") as f:
 
 print("BERTopic abgeschlossen. HTML gespeichert als 'bertopic_top5.html'.")
 
-# ======================================================
 # LDA
-# ======================================================
 print("Starte LDA …")
 texts = [t.split() for t in df["clean_body"]]
 dictionary = corpora.Dictionary(texts)
@@ -114,7 +110,7 @@ corpus = [dictionary.doc2bow(text) for text in texts]
 
 lda_model = LdaModel(corpus=corpus, id2word=dictionary, num_topics=5, passes=10, random_state=42)
 
-# Bestes Thema pro Dokument
+# Bestes Thema
 doc_topics = [max(lda_model.get_document_topics(bow), key=lambda x: x[1])[0] for bow in corpus]
 df["lda_topic"] = doc_topics
 lda_freq = df["lda_topic"].value_counts().head(5)
@@ -149,8 +145,7 @@ lda_html = f"""
 <div class="container">
     <h1>Top 5 Themen – LDA</h1>
     <div class="explain">
-        <strong>Erklärung:</strong> LDA (Latent Dirichlet Allocation) ist ein probabilistisches Modell, 
-        das jedes Dokument als Mischung mehrerer Themen darstellt.
+        <strong>Erklärung:</strong> LDA (Latent Dirichlet Allocation).
     </div>
     <img src="data:image/png;base64,{lda_chart}" alt="Balkendiagramm">
 """
