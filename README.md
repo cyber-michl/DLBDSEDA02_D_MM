@@ -21,7 +21,6 @@ Themenextraktionstechniken:
 - Latent Dirichlet Allocation (LDA) (gensim)
 - BERTopic (semantisches Clustering basierend auf Embeddings + HDBSCAN)
 
-
 Umgebung automatisch aufsetzen:
 -> requirements.txt
 pip install -r requirements.txt
