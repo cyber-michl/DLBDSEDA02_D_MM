@@ -10,20 +10,20 @@ import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 
-# NLTK Ressourcen
+#NLTK Ressourcen
 nltk.download('stopwords')
 
-# deutsche Stopwörter verwenden
+#deutsche Stopwörter verwenden
 german_stopwords = set(stopwords.words('german'))
 
-# CSV laden
+#CSV laden
 df = pd.read_csv("multilingual_support_tickets.csv")
 print("Spalten:", df.columns)
 
-# Nur deutsche Einträge
+#Nur deutsche Einträge
 df = df[df["language"] == "de"]
 
-# Texte bereinigen
+#Texte bereinigen
 def clean_text(text):
     text = str(text).lower()
     text = re.sub(r'[^a-zäöüß ]', ' ', text)
@@ -33,7 +33,7 @@ def clean_text(text):
 df["clean_body"] = df["body"].astype(str).apply(clean_text)
 print("Anzahl deutschsprachiger Beschwerden:", len(df))
 
-# BERTopic
+#BERTopic
 print("Starte BERTopic")
 embedding_model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 topic_model = BERTopic(embedding_model=embedding_model, language="german")
@@ -41,7 +41,7 @@ topic_model = BERTopic(embedding_model=embedding_model, language="german")
 topics, _ = topic_model.fit_transform(df["clean_body"])
 freq = topic_model.get_topic_freq().sort_values("Count", ascending=False).head(5)
 
-# Balkendiagramm BERTopic
+#Balkendiagramm BERTopic
 plt.figure(figsize=(8, 5))
 plt.barh([f"Thema {i+1}" for i in range(len(freq))], freq["Count"], color="steelblue")
 plt.xlabel("Anzahl Beschwerden")
@@ -52,7 +52,7 @@ plt.savefig(buf, format="png")
 plt.close()
 bertopic_chart = base64.b64encode(buf.getvalue()).decode("utf-8")
 
-# HTML für BERTopic
+#HTML für BERTopic
 bertopic_html = """
 <!DOCTYPE html>
 <html lang="de">
@@ -77,7 +77,7 @@ bertopic_html = """
     <img src="data:image/png;base64,{chart}" alt="Balkendiagramm">
 """.format(chart=bertopic_chart)
 
-# Durchnummerierung 1–5
+#Durchnummerierung 1–5
 for i, row in enumerate(freq.itertuples(), start=1):
     top_words = [w for w, _ in topic_model.get_topic(row.Topic)[:5]]
     label = " / ".join(top_words[:2])  # Automatisches Label
@@ -90,7 +90,7 @@ with open("bertopic_top5.html", "w", encoding="utf-8") as f:
 
 print("BERTopic abgeschlossen. HTML gespeichert als 'bertopic_top5.html'.")
 
-# LDA
+#LDA
 print("Starte LDA")
 texts = [t.split() for t in df["clean_body"]]
 dictionary = corpora.Dictionary(texts)
@@ -98,12 +98,12 @@ corpus = [dictionary.doc2bow(text) for text in texts]
 
 lda_model = LdaModel(corpus=corpus, id2word=dictionary, num_topics=5, passes=10, random_state=42)
 
-# Bestes Thema
+#Bestes Thema
 doc_topics = [max(lda_model.get_document_topics(bow), key=lambda x: x[1])[0] for bow in corpus]
 df["lda_topic"] = doc_topics
 lda_freq = df["lda_topic"].value_counts().head(5)
 
-# Balkendiagramm LDA
+#Balkendiagramm LDA
 plt.figure(figsize=(8, 5))
 plt.barh([f"Thema {i+1}" for i in range(len(lda_freq))], lda_freq.values, color="seagreen")
 plt.xlabel("Anzahl Beschwerden")
@@ -114,7 +114,7 @@ plt.savefig(buf, format="png")
 plt.close()
 lda_chart = base64.b64encode(buf.getvalue()).decode("utf-8")
 
-# HTML für LDA
+#HTML für LDA
 lda_html = """
 <!DOCTYPE html>
 <html lang="de">
@@ -138,7 +138,7 @@ lda_html = """
     <img src="data:image/png;base64,{chart}" alt="Balkendiagramm">
 """.format(chart=lda_chart)
 
-# Durchnummerierung 1–5
+# urchnummerierung 1–5
 for i, (idx, count) in enumerate(lda_freq.items(), start=1):
     words = [w for w, _ in lda_model.show_topic(idx, topn=5)]
     label = " / ".join(words[:2])
