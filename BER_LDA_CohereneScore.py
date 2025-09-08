@@ -89,7 +89,7 @@ def run_lda(df):
     plt.figure(figsize=(8, 5))
     plt.barh([f"Thema {i+1}" for i in range(len(lda_freq))], lda_freq.values, color="seagreen")
     plt.xlabel("Anzahl Beschwerden")
-    plt.title("Top 5 Themen – LDA")
+    plt.title("Top Themen – LDA")
     plt.tight_layout()
     buf = BytesIO()
     plt.savefig(buf, format="png")
