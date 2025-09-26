@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 
+
+#DOKUMENTATION vollumfänglich -> ausstehend! 
 #NLTK 
 nltk.download('stopwords')
 german_stopwords = set(stopwords.words('german'))
